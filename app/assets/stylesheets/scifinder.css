@@ -1,0 +1,13 @@
+
+.productMainLogo{
+	margin:0;
+	padding:0;
+	background:url(../images/sfow_logo_sprite.png) no-repeat -500px -500px;
+	background-position:10px -452px;text-indent:-9999px
+}
+.productMainLogo a {
+	width:190px;
+	margin-left:16px;
+	display:block
+}
+.productMainLogo,#productMainLogo a{height:45px}

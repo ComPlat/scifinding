@@ -1,0 +1,74 @@
+<%@r=resource_helper(@xx)%>
+<tr>
+<%= form_tag(@r.path,  id: @r.id,  multipart: true) do |f|%>
+ <%@r.tags.each do |tag|%>
+    <%if tag.hidden? then%><%= content_tag(*tag) %></td> <%else%> <td><%= content_tag(*tag.with_html_options(class: 'btn')) %></td> <%end%>
+  <%end%>  
+ <%end%>
+</tr>
+<tr>
+<td id=<%='svg_'  +@r.id%> ></td>
+<td id=<%='info_' +@r.id%> ></td>
+<td id=<%='links_'+@r.id%> ></td>
+</tr>
+
+
+<script type="text/javascript">
+
+//    $(document).on('ajax:success', 'a[data-remote].watching', function(e, data, status, xhr){
+//    });
+
+ // $(document).on('page:change',function(){
+ 
+function assign_ref_to_frame(el,link){
+      alert(link);
+      $(el).find('a').last.bind("click",function() {
+      alert('user click');
+       $(document).find("iframe#varframe").attr("src","http://redmine-ioc.ioc.kit.edu") ; 
+      });
+   }
+
+   $(document).ready(function(){
+      var form   = $('<%='form#'+@r.id%>');
+      var elsvg  = $('<%='td#svg_'+@r.id%>'),
+          elinfo = $('<%='td#info_'+@r.id%>'),
+          ellink = $('<%='td#links_'+@r.id%>');
+      $(form).submit(function(event){
+        event.preventDefault();
+      //  var formData = $(form).serialize();
+        var formData = new FormData(form[0]);
+        var  url = $(form).attr('action');
+       // alert( url );
+        $.ajax({ type : "POST",
+                 url : url,
+                 data : formData ,
+                 success: function(data, textStatus, jqXHR) {
+                            var resp = jqXHR.responseJSON;
+                            var buton;
+                            var info=resp.info,links=resp.links;
+                            if (jQuery.isEmptyObject(resp)){return alert('not found');} else {
+                              
+                                elsvg.html(resp.svg);
+                           //   elinfo.html(resp.info);
+                              if (jQuery.isEmptyObject(info )) {alert('empty info');} else {for (var pieceOfInfo in info) {elinfo.append("<div>"+info[pieceOfInfo]+"</div>");}}
+                              if (jQuery.isEmptyObject(links)){alert('empty links');} else {for (var link in links){
+                                 ellink.append("<div><a href=\"#\">Scifinder</a></div>"); 
+                                ellink.find('a:last').bind("click",function() {
+      
+       $("#frame1").prop("src",links[link]) ; 
+    
+     });
+ 
+                               }}
+                        // ellink.attr('href',resp.link);
+                        // ellink.text('Answer Set');}
+                             }
+                          },
+                // complete : function(msg) {$("#svg").html(msg.responseText);},
+                cache : false,
+                contentType : false,
+                processData : false
+                });
+      });
+      });
+</script>

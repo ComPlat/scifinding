@@ -1,0 +1,20 @@
+
+<%#= javascript_include_tag "scifinding/application" %>
+<table style="width:100%">
+<tr>
+<th></th><th></th><th></th><th></th><th></th>
+</tr>
+<tbody>
+<%[51,52,53,61,62,63,71,72].each do |xx| %>
+ <%@xx=xx%>
+ <%= render 'form', xx: @xx%>
+<%end%>
+</tbody>
+</table>
+<div style="display:inline-block;width:48%">
+<iframe id="frame2" style="width:100%;min-height:900px"  src="http://ioc-redmine.ioc.kit.edu:81"></iframe>
+</div>
+<div style="display:inline-block;width:48%">
+<iframe id="frame1" style="width:100%;min-height:900px"  src="http://ioc-redmine.ioc.kit.edu:81"></iframe>
+</div>
+<%=link_to 'credentials list', credentials_path %>

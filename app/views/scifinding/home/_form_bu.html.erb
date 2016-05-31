@@ -1,0 +1,50 @@
+
+<%= form_tag(home_resource_53_path,  id: 'r_53') do %>
+
+  <%= label_tag(:cas_rn, "Enter a CAS registry number:") %>
+
+  <%= text_field_tag(:cas_rn, nil, type: 'hidden') %>
+
+  <%= submit_tag("retrieve structure") %>
+
+<% end %>
+<%= form_tag(home_resource_52_path,  id: 'r_52') do %>
+
+  <%= label_tag(:doi, "Enter a DOI:") %>
+
+  <%= text_field_tag(:doi) %>
+
+  <%= submit_tag("retrieve doi info") %>
+
+<% end %>
+<%= form_tag(home_resource_51_path,  id: 'r_51') do %>
+
+  <%= label_tag(:cas_rn, "Enter a patent number:") %>
+
+  <%= text_field_tag(:patent_num) %>
+
+  <%= submit_tag("retrieve patent info") %>
+
+<% end %>
+<%= form_tag(home_resource_63_path,  id: 'r_63') do %>
+
+  <%= label_tag(:cas_rn, "Enter a CAS registry number:") %>
+
+  <%= text_field_tag(:cas_rn) %>
+
+  <%= submit_tag("retrieve molecule link") %>
+
+<% end %>
+<%= form_tag(home_resource_62_path,  id: 'r_62') do %>
+
+  <%= label_tag(:doi, "Enter a DOI:") %>
+
+  <%= text_field_tag(:doi) %>
+
+  <%= submit_tag("retrieve doi link") %>
+
+<% end %>
+<%= form_tag(home_resource_61_path,  id: 'r_61') do %>
+
+  <%= label_tag(:patent_num, "Enter a patent number:") %>
+

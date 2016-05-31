@@ -1,0 +1,19 @@
+---
+SampleDetails:
+   Tab:
+     - SampleDetailsTab
+   TabName:
+     - SampleDetailsTabName
+   Labels:
+     - HitCountInfo
+
+ReactionDetails:
+   Tab:
+     - ReactionDetailsTab
+   TabName:
+     - SampleDetailsTabName
+
+ElementsTableSampleEntries:
+   MolHeadCont:
+     - ElementsTableEntriesTd
+---
