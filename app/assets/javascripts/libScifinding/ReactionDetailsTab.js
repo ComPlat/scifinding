@@ -137,9 +137,18 @@ export default class ReactionDetailsTabHook extends Component {
     return (
       <div style={{width:100+'%'}}>
         <br/>
+        <p style={{width:'100%', textAlign:'center'}}>
+          Get reactions where the structures are 
+        </p>
         <ButtonToolbar><ButtonGroup justified>
-          <ButtonGroup><ScifiQueryButton  element={reaction} params={{...rxn , searchType : 'variable'}}       /> </ButtonGroup>
-          <ButtonGroup><ScifiQueryButton  element={reaction} params={{...rxn, searchType : 'substructure'}}/> </ButtonGroup>
+          <ButtonGroup>
+            <ScifiQueryButton element={reaction} params={{...rxn ,
+              searchType: 'variable only at the specifiec position'}}/>
+          </ButtonGroup>
+          <ButtonGroup>
+            <ScifiQueryButton element={reaction} params={{...rxn,
+              searchType: 'substructures of more complex molecules'}}/>
+          </ButtonGroup>
         </ButtonGroup></ButtonToolbar>
         {this.moleculeSelector()}
         <ScifiLinkButton linkElement={lastLink}/>

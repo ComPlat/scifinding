@@ -64,7 +64,7 @@ export default class ScifiQueryButton extends Component {
     else if (searchType == 'i'){bkgd ={backgroundColor:'black'};}
     return (
       <Button bsSize="small" bsStyle="default" onClick={() => this.scifiQuery(params)}>
-          <Badge style={bkgd}>  <Glyphicon glyph="search" /></Badge><h5> {params.searchType} search</h5>
+          <Badge style={bkgd}>  <Glyphicon glyph="search" /></Badge><h5> {params.searchType}</h5>
       </Button>
     )
   }
