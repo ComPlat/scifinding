@@ -17,7 +17,12 @@ module Scifinding
     #############################################
     def client
       logger.debug __method__
-      @client ||= OAuth2::Client.new(Scifinding.client_id, Scifinding.client_key,:site => Scifinding.site, :token_url => Scifinding.token_path, :raise_errors => false)
+      @client ||= OAuth2::Client.new(Scifinding.client_id,
+       Scifinding.client_key,
+       :site => Scifinding.site,
+       :token_url => Scifinding.token_path,
+       :raise_errors => false,
+       :auth_scheme => :basic_auth)
     end #client
 
     def valid_access_token?
