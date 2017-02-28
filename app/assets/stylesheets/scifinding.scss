@@ -1,0 +1,22 @@
+
+.sf_sample_off svg {
+  filter: opacity(40%);
+  -webkit-filter: opacity(40%);
+}
+
+.sf_reaction_selector svg {
+  width: 90px;
+  height: 90px;
+
+}
+.sf-reaction-button:hover{
+  color: #333;
+  background-color: white;
+  border-color: #8c8c8c;
+}
+
+.sf-reaction-button:focus,
+.sf-reaction-button.focus {
+  background-color: white;
+  border-color: #8c8c8c;
+}

@@ -92,7 +92,7 @@ export default class ReactionDetailsTabHook extends Component {
 
           {reagents.map((e,i)=>{return this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,e.type+e.id);})}
           {reactants.map((e,i)=>{return this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,e.type+e.id);})}
-            <ButtonGroup>  <Button><Glyphicon glyph="arrow-right" /></Button>  </ButtonGroup>
+            <ButtonGroup>  <Button style={{borderWidth:0}}><Glyphicon glyph="arrow-right" /></Button>  </ButtonGroup>
           {products.map((e,i)=>{return this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,(e.type+e.id));})}
 
       </ButtonGroup></ButtonToolbar>
@@ -100,17 +100,20 @@ export default class ReactionDetailsTabHook extends Component {
   }
 
   buttonSVG(svgPath,id){
+    console.log(svgPath);
       let classes = classnames({
-          'btn-info': true,
+          //'btn-info': true,
         //  'btn-primary': !this.state[id],
         //  'btn-default': this.state[id],
-          disabled: !this.state[id]
+        //  disabled: !this.state[id]
+        sf_reaction_selector: true ,
+        sf_sample_off: !this.state[id]
       });
 
     return(
       <ButtonGroup  key={"btGrp"+id} >
-        <Button className={classes} style={{ cursor:'pointer'}} onClick={() =>{this.toggleSelection(id)}}>
-          <SVG key={id} uniquifyIDs={true} style={{ verticalAlign: 'middle'}} className={'molecule'}    src={svgPath}/>
+        <Button className={'sf-reaction-button'}  style={{ cursor:'pointer'}} onClick={() =>{this.toggleSelection(id)}}>
+          <SVG key={id} uniquifyIDs={true} style={{ verticalAlign: 'middle'}} className={classes}    src={svgPath}/>
         </Button>
       </ButtonGroup>
     )
@@ -135,21 +138,24 @@ export default class ReactionDetailsTabHook extends Component {
     let rxn = this.buildRxn();
 
     return (
-      <div style={{width:100+'%'}}>
+      <div>
         <br/>
-        <p style={{width:'100%', textAlign:'center'}}>
-          Get reactions where the structures are 
-        </p>
-        <ButtonToolbar><ButtonGroup justified>
-          <ButtonGroup>
-            <ScifiQueryButton element={reaction} params={{...rxn ,
-              searchType: 'variable only at the specifiec position'}}/>
-          </ButtonGroup>
-          <ButtonGroup>
-            <ScifiQueryButton element={reaction} params={{...rxn,
-              searchType: 'substructures of more complex molecules'}}/>
-          </ButtonGroup>
-        </ButtonGroup></ButtonToolbar>
+
+          <p style={{textAlign:'center'}}>
+            Get reactions where the structures are
+          </p>
+          <ButtonToolbar><ButtonGroup justified>
+            <ButtonGroup>
+              <ScifiQueryButton element={reaction} params={{...rxn ,
+                searchType: 'variable only at the specific position'}}/>
+            </ButtonGroup>
+            <ButtonGroup>
+              <ScifiQueryButton element={reaction} params={{...rxn,
+                searchType: 'substructures of more complex molecules'}}/>
+            </ButtonGroup>
+          </ButtonGroup></ButtonToolbar>
+
+        <br/>
         {this.moleculeSelector()}
         <ScifiLinkButton linkElement={lastLink}/>
         <br/>
