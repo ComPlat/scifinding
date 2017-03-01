@@ -29,34 +29,35 @@ module Scifinding
       end
       post :sf71 do
         resp = {}
-        resp= Scifinding::Credential.where(user_id: current_user.id).last.answer_to_substance(params[:searchType],params[:hitCount],params[:mdl])
+        cred = Scifinding::Credential.where(user_id: current_user.id).last
+        resp = cred && cred.answer_to_substance(params[:searchType],params[:hitCount],params[:mdl])
         if (sampId=params[:elementId]) && params[:elementType] == "sample" && params[:searchType] == 'exact'
-          id=Sample.find(sampId).molecule_id
-          tag=Scifinding::Tag.find_or_create_by(molecule_id: id)
+          id = Sample.find(sampId).molecule_id
+          tag = Scifinding::Tag.find_or_create_by(molecule_id: id)
         end
 
         if resp.is_a?(OAuth2::Response) && resp.respond_to?(:body)
-          body=JSON.parse(resp.body)
+          body = resp.body && JSON.parse(resp.body) || {}
           hits = body['hitCount'].to_s
-          links = body['url']
-          status = resp.status
+          url = body['url']
+          status = resp.status.to_i
+          message = body if status != 200
         else
           hits = 0
-          links = ''
-          status = '500e'
+          url = '/pages/settings'
+          status = '500'
+          message = 'The query could not be processed. Please check your access token in the Account Settings'
         end
         if tag && status == 200
           tag.update_attributes(count: hits.to_i)
         end
       #  sleep(5)
-        {info: hits,links: links, status: status}
+        {hitCount: hits, url: url, status: status, message: message}
       end
 
       desc "return answer to reaction rxn (reagent mdl + product mdl): 72"
       params do
         requires :rxn , type: String, desc: 'MolFile reaction file rxn'
-        #optional :prod, type: , desc: "products: array of element ids "
-        #optional :reag, type: , desc: "reagents: array of element ids "
         optional :elementId, type: Integer, desc: "element id"
         optional :search_type, type: String, default: 'substructure', values: ['substructure','variable']
         optional :elementType, type: String, default: 'reaction',desc: "element type : reaction"
@@ -65,7 +66,8 @@ module Scifinding
         p __method__
         p params
         resp = {}
-        resp= Scifinding::Credential.where(user_id: current_user.id).last.answer_to_reaction(params[:search_type],params[:rxn])
+        cred = Scifinding::Credential.where(user_id: current_user.id).last
+        resp = cred && cred.answer_to_reaction(params[:search_type],params[:rxn])
         if resp.is_a?(OAuth2::Response)
           p resp.status
           status = resp.status
@@ -73,21 +75,16 @@ module Scifinding
 
           case status.to_i
             when 200
-            #body=JSON.parse(resp.body)
-            #hits = body['hitCount'].to_s
-              links = resp.body
-            when 400
-            when 401
-            when 403
-            when 406
-            when 415
+              url = resp.body
             else
+              message = resp.body
           end
         else
-          links = ''
-          status = '500e'
+          url = '/pages/settings'
+          status = '500'
+          message = 'The query could not be processed. Please check your access token in the Account Settings'
         end
-        {links: links, status: status}
+        {url: url, status: status, message: message}
       end
 
       desc "update credential by id"

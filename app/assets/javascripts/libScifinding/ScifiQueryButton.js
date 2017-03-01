@@ -11,20 +11,6 @@ export default class ScifiQueryButton extends Component {
 
   }
 
-  componentDidMount() {
-
-  }
-
-  componentWillUnmount() {
-
-  }
-
-  onChange(state) {
-
-  }
-
-
-
   scifiQuery(params){
     let element = this.props.element || {}
     let elementType = element.type;
@@ -50,9 +36,7 @@ export default class ScifiQueryButton extends Component {
         ScifiActions.updateSf72({...params},otherParams);
         break;
     }
-
   }
-
 
 
   render() {

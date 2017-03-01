@@ -9,7 +9,7 @@ class ScifiStore {
     this.state = {
       links: [],
       lastLink: {
-        answerLink: null,
+        url: null,
         hitCount:  null,
         elementId: null,
         elementTitle:   null ,
@@ -28,14 +28,12 @@ class ScifiStore {
     })
   }
 
-
-
-
   handleUpdateScifi71(sf71Resp) {
-    let timeNow=function(){return new Date().getTime();};
-    let lastLink = {key: timeNow(),status:sf71Resp.status, elementTitle: sf71Resp.elementTitle ,hitCount: sf71Resp.info, answerLink: sf71Resp.links, searchType:sf71Resp.searchType, elementId:sf71Resp.elementId, svgPath: sf71Resp.svgPath, elementType: sf71Resp.elementType};
-    //  ({...this.state.lastLink} ={...lastLink});
-    this.setState({links: [lastLink,...this.state.links],lastLink: lastLink});//this.state.links.unshift(lastLink);
+    let timeNow = () => {return new Date().getTime();}
+    let lastLink = {key: timeNow(), ...sf71Resp}
+    let newLinks = [ lastLink, ...this.state.links]
+    this.state.links = newLinks
+    this.state.lastLink = lastLink
     this.handleRefreshElements(sf71Resp.elementType);
   }
 
@@ -45,7 +43,7 @@ class ScifiStore {
 
   handleUpdateSample(){
     ({...this.state.lastLink} ={
-        answerLink: null,
+        url: null,
         hitCount:  null,
         elementId: null,
         elementTitle:   null ,
@@ -78,18 +76,10 @@ class ScifiStore {
         case 'reaction':
           ElementActions.fetchReactionsByCollectionId(uiState.currentCollection.id, {page: page, per_page: uiState.number_of_results});
           break;
-        case 'wellplate':
-          ElementActions.fetchWellplatesByCollectionId(uiState.currentCollection.id, {page: page, per_page: uiState.number_of_results});
-          break;
-        case 'screen':
-          ElementActions.fetchScreensByCollectionId(uiState.currentCollection.id, {page: page, per_page: uiState.number_of_results});
-          break;
       }
     }
 
-
   }
-
 
 
 }

@@ -24,18 +24,16 @@ export default class ReactionDetailsTabHook extends Component {
       ...ScifiStore.getState(),
       ...selection,
     };
-     //
 
+    this.onChange = this.onChange.bind(this)
   }
 
   componentDidMount() {
-  //  ElementStore.listen(this.onChange.bind(this));
-    ScifiStore.listen(this.onChange.bind(this));
+    ScifiStore.listen(this.onChange);
   }
 
   componentWillUnmount() {
-  //  ElementStore.unlisten(this.onChange.bind(this));
-    ScifiStore.unlisten(this.onChange.bind(this));
+    ScifiStore.unlisten(this.onChange);
   }
 
   onChange(state) {
@@ -49,10 +47,7 @@ export default class ReactionDetailsTabHook extends Component {
     //({...this.state} = {...ScifiStore.getState()});
   }
 
-
-
   buildRxn(){
-    //todo move rxn file build  to backend?
     let rxn = "$RXN\n\n\n\n";
     let molBreak = "$MOL\n";
     let rl = 0;
@@ -100,12 +95,7 @@ export default class ReactionDetailsTabHook extends Component {
   }
 
   buttonSVG(svgPath,id){
-    console.log(svgPath);
       let classes = classnames({
-          //'btn-info': true,
-        //  'btn-primary': !this.state[id],
-        //  'btn-default': this.state[id],
-        //  disabled: !this.state[id]
         sf_reaction_selector: true ,
         sf_sample_off: !this.state[id]
       });

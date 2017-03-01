@@ -13,30 +13,29 @@ import classnames from 'classnames';
 export default class SampleDetailsTabHook extends Component {
 
   constructor(props) {
-    super(props);
-    const scifiStoreState = ScifiStore.getState();
-    this.state = scifiStoreState; //
+    super(props)
+    const scifiStoreState = ScifiStore.getState()
+    this.state = scifiStoreState
 
+    this.onChange = this.onChange.bind(this)
   }
 
   componentDidMount() {
-    //ElementStore.listen(this.onChange.bind(this));
-    ScifiStore.listen(this.onChange.bind(this));
+    ScifiStore.listen(this.onChange);
   }
 
   componentWillUnmount() {
-    //ElementStore.unlisten(this.onChange.bind(this));
-    ScifiStore.unlisten(this.onChange.bind(this));
+    ScifiStore.unlisten(this.onChange);
   }
 
   onChange(state) {
     this.setState(state);
   }
+
   scifiAnswer(l){
     window.open(l,'_parent');
   }
   scifiFrame(link){
-  //="http://ioc-redmine.ioc.kit.edu:81"
     return (
         <iframe
           sandbox="allow-same-origin allow-scripts allow-popups allow-forms"

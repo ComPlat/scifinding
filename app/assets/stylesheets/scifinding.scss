@@ -20,3 +20,8 @@
   background-color: white;
   border-color: #8c8c8c;
 }
+
+.sf_unknown {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+}
