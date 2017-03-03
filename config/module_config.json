@@ -1,0 +1,32 @@
+{
+  "SampleDetails": {
+    "Tabs": {
+      "Tab0": {
+        "content": "SampleDetailsTab",
+        "title": "SampleDetailsTabName"
+       }
+     },
+     "Labels": {
+       "Label0": {
+         "content": "HitCountInfo"
+       }
+     }
+  },
+
+  "ReactionDetails": {
+    "Tabs": {
+      "Tab0": {
+        "content": "ReactionDetailsTab",
+        "title": "SampleDetailsTabName"
+      }
+    }
+   },
+    
+  "ElementsTableSampleEntries": {
+    "MolHeadCont": {
+       "0": {
+         "content": "ElementsTableEntriesTd"
+       }
+    }
+  }
+}
