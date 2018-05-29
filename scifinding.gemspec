@@ -18,6 +18,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", ">=  4.2.7"
-  s.add_dependency 'oauth2', "1.4.0"
+#  s.add_dependency 'oauth2', [">= 1.4.0", "< 3.0"]
   s.add_dependency 'attr_encrypted' ,"3.1.0"
 end

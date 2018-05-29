@@ -13,14 +13,8 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
-gem 'jquery-rails'
-gem "jquery-hotkeys-rails"
-gem 'jquery-ui-rails'#, '4.2.1'
-
-gem  'oauth2'
-gem  'attr_encrypted', '3.0.1'
-gem 'openbabel', '2.3.2.1', github: 'cubuslab/openbabel-gem'
-gem 'rubabel', git: "git://github.com/awayanyway/rubabel.git"
+gem  'oauth2', git: 'https://github.com/oauth-xx/oauth2'
+gem  'attr_encrypted'
 
 gem 'browserify-rails'
 gem 'pundit'
