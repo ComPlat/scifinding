@@ -21,7 +21,9 @@ module Scifinding
   self.client_id    = ENV['SF_CLIENT_ID']
   self.client_key   = ENV['SF_CLIENT_KEY']
   self.site         = ENV['SF_SITE']
-  self.passphrase   = ENV['SF_PASS_PHRASE']
+  # NB: see https://github.com/attr-encrypted/encryptor/issues/26
+  # use ` Base64.encode64(SecureRandom.random_bytes(length)).delete("\n") ` to generate ENV['SF_PASS_PHRASE']
+  self.passphrase   = Base64.decode64 ENV['SF_PASS_PHRASE'] 
   self.token_path   = ENV['SF_TOKEN_PATH']
   self.ping_path    = ENV['SF_PING_PATH']
   self.pat_inf_path = ENV['SF_PAT_INF_PATH']

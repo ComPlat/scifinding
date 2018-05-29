@@ -1,5 +1,10 @@
 
 # Scifinding Changelog
+## [v0.1.7]
+> 2016-09-14
+-**fix:** upd dependencies    
+[v0.1.7]: https://github.com/ComPlat/scifinding/releases/tag/v0.1.7
+
 
 ## [v0.1.0]
 > 2016-09-14
