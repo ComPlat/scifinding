@@ -63,7 +63,7 @@ export default class ReactionDetailsTabHook extends Component {
     let xl = 0;
     let pl = 0;
     let molfiles = "";
-    let svgs ={reagents:[],products:[]};
+    const svgs ={ reagents: [], products: [] };
     this.props.reaction._starting_materials.map((e)=>{
       if (this.state[e.type+e.id]) {
         ++rl;
@@ -92,29 +92,25 @@ export default class ReactionDetailsTabHook extends Component {
     rxn += "\n"
     rxn += molfiles;
 
-    return {rxn: rxn, svgs: svgs};
+    return { rxn, svgs };
   }
 
-  moleculeSelector(){
-
-    let reagents  = this.props.reaction._starting_materials//.map((e)=>e._molecule.molecule_svg_file) ||[];
-    let reactants = this.props.reaction._reactants//.map((e)=>e._molecule.molecule_svg_file) || [];
-    let products  = this.props.reaction._products//.map((e)=>e._molecule.molecule_svg_file) || [];
-
+  moleculeSelector() {
+    const { _starting_materials,  _reactants, _products }  = this.props.reaction
     return  (
       <ButtonToolbar><ButtonGroup justified>
 
-          {reagents.map((e,i)=>{return this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,e.type+e.id);})}
-          {reactants.map((e,i)=>{return this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,e.type+e.id);})}
+          {_starting_materials.map((e, i) => this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`, e.type + e.id))}
+          {_reactants.map((e, i) => this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`, e.type + e.id))}
             <ButtonGroup>  <Button style={{borderWidth:0}}><Glyphicon glyph="arrow-right" /></Button>  </ButtonGroup>
-          {products.map((e,i)=>{return this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,(e.type+e.id));})}
+          {_products.map((e, i) => this.buttonSVG(`/images/molecules/${e._molecule.molecule_svg_file}`,(e.type + e.id)))}
 
       </ButtonGroup></ButtonToolbar>
     )
   }
 
-  buttonSVG(svgPath,id){
-      let classes = classnames({
+  buttonSVG(svgPath, id) {
+      const classes = classnames({
         sf_reaction_selector: true ,
         sf_sample_off: !this.state[id]
       });
@@ -129,40 +125,38 @@ export default class ReactionDetailsTabHook extends Component {
   }
 
   toggleSelection(id){
-    let newState = {};
-    if (this.state[id]) {
-      newState[id]=false;
-      this.setState(newState);
-    } else {
-      newState[id]=true;
-      this.setState(newState);
-    }
+    const newState = {};
+    newState[id] = !this.state[id];
+    this.setState(prevState => ({ ...prevState, ...newState }));
   }
 
   render() {
-    let reaction = this.props.reaction;
+    const { reaction } = this.props;
     let links = this.state.links;
     let lastLink = this.state.lastLink;
-    if ( lastLink.elementId != this.props.reaction.id){  lastLink= {};}
-    let rxn = this.buildRxn();
+    if ( lastLink.elementId !== reaction.id) { lastLink = {};}
+    const rxn = this.buildRxn();
 
     return (
       <div>
         <br/>
-
-          <p style={{textAlign:'center'}}>
-            Get reactions where the structures are
-          </p>
-          <ButtonToolbar><ButtonGroup justified>
-            <ButtonGroup>
-              <ScifiQueryButton element={reaction} params={{...rxn ,
-                searchType: 'variable only at the specific position'}}/>
-            </ButtonGroup>
-            <ButtonGroup>
-              <ScifiQueryButton element={reaction} params={{...rxn,
-                searchType: 'substructures of more complex molecules'}}/>
-            </ButtonGroup>
-          </ButtonGroup></ButtonToolbar>
+        <p style={{textAlign:'center'}}>
+          Get reactions where the structures are
+        </p>
+        <ButtonToolbar><ButtonGroup justified>
+          <ButtonGroup>
+            <ScifiQueryButton
+              element={reaction}
+              params={{ ...rxn , searchType: 'variable only at the specific position' }}
+            />
+          </ButtonGroup>
+          <ButtonGroup>
+            <ScifiQueryButton
+              element={reaction}
+              params={{ ...rxn, searchType: 'substructures of more complex molecules'}}
+            />
+          </ButtonGroup>
+        </ButtonGroup></ButtonToolbar>
 
         <br/>
         {this.moleculeSelector()}

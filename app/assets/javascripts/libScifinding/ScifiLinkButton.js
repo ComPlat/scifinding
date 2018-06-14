@@ -4,10 +4,7 @@ import ScifiStore from './stores/ScifiStore';
 import ElementStore from 'components/stores/ElementStore';
 import SVG from 'react-inlinesvg';
 
-const ScifiLinkButton = ({linkElement}) => {
-  return linkElement.status == 200 ?
-   linkButton(linkElement) : errorButton(linkElement)
-}
+const ScifiLinkButton = ({ linkElement }) => (linkElement.status === 200 ? linkButton(linkElement) : errorButton(linkElement));
 
 const badgeCount = (count) => {
   return count ?
@@ -15,59 +12,67 @@ const badgeCount = (count) => {
 }
 
 const getSVG = ({elementId, elementType, svgPath}) => {
-  let classNames = 'molecule well-molecule';
-  let key = elementType+elementId
+  const classNames = 'molecule well-molecule';
+  const key = elementType + elementId
   if (elementType == "sample") {
     return(
-      <SVG key={key} uniquifyIDs={true} style={{ verticalAlign: 'middle'}} className={classNames}    src={`/images/molecules/${svgPath}`}/>
+      <SVG key={key} uniquifyIDs={true} style={{ verticalAlign: 'middle'}} className={classNames} src={`/images/molecules/${svgPath}`}/>
     )
-  } else if (elementType == "reaction") {
+  }
+  if (elementType == "reaction") {
     return ['reagents','products'].map((compounds)=>svgPath[compounds].map((e)=>
-        <SVG key={key} uniquifyIDs={true} style={{ verticalAlign: 'middle'}} className={classNames}    src={`/images/molecules/${e}`}/>
+        <SVG key={e} uniquifyIDs={true} style={{ verticalAlign: 'middle'}} className={classNames} src={`/images/molecules/${e}`}/>
       )
     )
-  } else {return null}
-}
-
-const bdcol = (s) =>{
-  if (s) {
-    //exact search
-    if (s[1] == 'x'){return 'green'}
-    // substructure
-    else if (s[1] == 'u'){return 'blue'}
-    //similarity (default)
-    else {return 'black'}
   }
-  else {return 'black'}
+  return null;
+}
+
+const bdcol = (s) => {
+  if (!s) { return 'black'; }
+    //exact search
+  if (s[1] === 'x') { return 'green' }
+  // substructure
+  if (s[1] === 'u') { return 'blue' }
+  //similarity (default)
+  return 'black';
 }
 
 
-const linkButton = ({url, hitCount, elementTitle, searchType, ...props}) =>{
-  return(
-    <ButtonToolbar><ButtonGroup justified><ButtonGroup>
-      <Button bsSize="xsmall" bsStyle="default"
-        style={{cursor: 'pointer'}}
-        target='scifinder'
-        href={url}>
-        <h5 style={{ verticalAlign: 'middle'}} >
-          <Badge style={{backgroundColor: bdcol(searchType)}}>  <Glyphicon glyph="search" /> </Badge>
-          &nbsp;{elementTitle} {badgeCount(hitCount)} on scifinder.cas.org</h5>
-        {getSVG(props)}
-      </Button>
-    </ButtonGroup></ButtonGroup></ButtonToolbar>
-  )
-}
+const linkButton = ({url, hitCount, elementTitle, searchType, ...props}) => (
+  <ButtonToolbar><ButtonGroup justified><ButtonGroup>
+    <Button
+      bsSize="xsmall"
+      bsStyle="default"
+      style={{ cursor: 'pointer' }}
+      target="scifinder"
+      href={url}
+    >
+      <h5 style={{ verticalAlign: 'middle'}} >
+        <Badge style={{backgroundColor: bdcol(searchType)}}>  <Glyphicon glyph="search" /> </Badge>
+        &nbsp;{elementTitle} {badgeCount(hitCount)} on scifinder.cas.org
+      </h5>
+      {getSVG(props)}
+    </Button>
+  </ButtonGroup></ButtonGroup></ButtonToolbar>
+);
+
 
 const errorButton = ({status, url, message, searchType, ...linkElement}) => {
   return( status ?
     <ButtonToolbar><ButtonGroup justified><ButtonGroup>
-      <Button bsSize="xsmall" bsStyle="default"
+      <Button
+        bsSize="xsmall"
+        bsStyle="default"
         style={{cursor: 'pointer'}}
         target='scifinder'
-        href={url}>
+        href={url}
+      >
         <h5 style={{ verticalAlign: 'middle', whiteSpace: 'normal'}} >
           <Badge style={{backgroundColor: bdcol(searchType)}}> <Glyphicon glyph="search"/> </Badge>
-          &nbsp;error {status}: {message}</h5>{getSVG(linkElement)}
+          &nbsp;error {status}: {message}
+        </h5>
+        {getSVG(linkElement)}
       </Button>
     </ButtonGroup></ButtonGroup></ButtonToolbar>
    : null )
