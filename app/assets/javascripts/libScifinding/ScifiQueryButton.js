@@ -22,7 +22,7 @@ export default class ScifiQueryButton extends Component {
       elementTitle = element.short_label ;
     } else if (elementType == "reaction"){
       svgPath =params.svgs;//element.reaction_svg_file;
-      elementTitle = element.name || undefined;
+      elementTitle = element.short_label || element.name || undefined;
     } else {
       svgPath= undefined;
     }

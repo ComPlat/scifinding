@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
-import {Badge,Button, ButtonGroup, ButtonToolbar, Glyphicon} from 'react-bootstrap';
+import SVG from 'react-inlinesvg';
+import { Badge, Button, Glyphicon, Col, Row, Panel } from 'react-bootstrap';
 import ScifiStore from './stores/ScifiStore';
 import ElementStore from 'components/stores/ElementStore';
-import SVG from 'react-inlinesvg';
-
-const ScifiLinkButton = ({ linkElement }) => (linkElement.status === 200 ? linkButton(linkElement) : errorButton(linkElement));
 
 const badgeCount = (count) => {
   return count ?
@@ -12,7 +10,7 @@ const badgeCount = (count) => {
 }
 
 const getSVG = ({elementId, elementType, svgPath}) => {
-  const classNames = 'molecule well-molecule';
+  const classNames = 'molecule molecule-small';
   const key = elementType + elementId
   if (elementType == "sample") {
     return(
@@ -38,44 +36,34 @@ const bdcol = (s) => {
   return 'black';
 }
 
-
-const linkButton = ({url, hitCount, elementTitle, searchType, ...props}) => (
-  <ButtonToolbar><ButtonGroup justified><ButtonGroup>
-    <Button
-      bsSize="xsmall"
-      bsStyle="default"
-      style={{ cursor: 'pointer' }}
-      target="scifinder"
-      href={url}
+const ScifiLinkButton = ({ linkElement }) => {
+  const { url, hitCount, elementTitle, searchType, message, status,  ...props } = linkElement;
+  if (!status) { return null; }
+  let info = <p></p>;
+  if (status === 200) {
+    info = <p> {badgeCount(hitCount)} on scifinder.cas.org</p>;
+  } else {
+    info = <p>  error {status} </p>;
+  }
+  const errorMessage = status === 401 ? 'Unauthorized - check your access token in Account Settings' : message;
+  return(
+    <Panel
+      style={{ cursor: 'pointer', marginBottom: 0 }}
+      onClick={()=> window.open(`${url}` , '_blank')}
     >
-      <h5 style={{ verticalAlign: 'middle'}} >
-        <Badge style={{backgroundColor: bdcol(searchType)}}>  <Glyphicon glyph="search" /> </Badge>
-        &nbsp;{elementTitle} {badgeCount(hitCount)} on scifinder.cas.org
-      </h5>
-      {getSVG(props)}
-    </Button>
-  </ButtonGroup></ButtonGroup></ButtonToolbar>
-);
-
-
-const errorButton = ({status, url, message, searchType, ...linkElement}) => {
-  return( status ?
-    <ButtonToolbar><ButtonGroup justified><ButtonGroup>
-      <Button
-        bsSize="xsmall"
-        bsStyle="default"
-        style={{cursor: 'pointer'}}
-        target='scifinder'
-        href={url}
-      >
-        <h5 style={{ verticalAlign: 'middle', whiteSpace: 'normal'}} >
-          <Badge style={{backgroundColor: bdcol(searchType)}}> <Glyphicon glyph="search"/> </Badge>
-          &nbsp;error {status}: {message}
-        </h5>
-        {getSVG(linkElement)}
-      </Button>
-    </ButtonGroup></ButtonGroup></ButtonToolbar>
-   : null )
+      <Row>
+        <Col sm={4}>
+          <h5 style={{ verticalAlign: 'middle', whiteSpace: 'normal'}} >
+            <Badge style={{backgroundColor: bdcol(searchType)}}>  <Glyphicon glyph="search" /> </Badge>
+            &nbsp;{elementTitle}
+          </h5> {info}
+        </Col>
+        <Col sm={8} style={{ verticalAlign: 'middle'}}>
+          {status === 200 ? getSVG(props) : errorMessage}
+        </Col>
+      </Row>
+    </Panel>
+  );
 }
 
 export default ScifiLinkButton
