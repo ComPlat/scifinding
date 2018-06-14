@@ -9,6 +9,15 @@ import ElementStore from 'components/stores/ElementStore';
 import SVG from 'react-inlinesvg';
 import classnames from 'classnames';
 
+// strip molfile V2000 after molecule end 'M  END'
+const stripMolfile = (molfile) => {
+  const splitted = molfile.split(/(^M  END)/m)
+  if (splitted.length > 1) {
+    return splitted.slice(0, 2).join('').concat("\n")
+  }
+  return ''
+}
+
 export default class ReactionDetailsTabHook extends Component {
 
   constructor(props) {
@@ -49,22 +58,32 @@ export default class ReactionDetailsTabHook extends Component {
 
   buildRxn(){
     let rxn = "$RXN\n\n\n\n";
-    let molBreak = "$MOL\n";
+    const molBreak = "$MOL\n";
     let rl = 0;
     let xl = 0;
     let pl = 0;
-    let molfiles="";
+    let molfiles = "";
     let svgs ={reagents:[],products:[]};
     this.props.reaction._starting_materials.map((e)=>{
-      if (this.state[e.type+e.id]){ ++rl; molfiles +=  molBreak+e.molfile;
+      if (this.state[e.type+e.id]) {
+        ++rl;
+        molfiles +=  molBreak + stripMolfile(e.molfile);
         svgs.reagents.push(e.molecule.molecule_svg_file);
       }
     });
     this.props.reaction._reactants.map((e)=>{
-      if (this.state[e.type+e.id]){ ++xl; molfiles +=  molBreak+e.molfile;svgs.reagents.push(e.molecule.molecule_svg_file);}
+      if (this.state[e.type+e.id]) {
+        ++xl;
+        molfiles +=  molBreak + stripMolfile(e.molfile);
+        svgs.reagents.push(e.molecule.molecule_svg_file);
+      }
     });
     this.props.reaction._products.map((e)=>{
-      if (this.state[e.type+e.id]){ ++pl; molfiles +=  molBreak+e.molfile;svgs.products.push(e.molecule.molecule_svg_file);}
+      if (this.state[e.type+e.id]) {
+        ++pl;
+        molfiles +=  molBreak + stripMolfile(e.molfile);
+        svgs.products.push(e.molecule.molecule_svg_file);
+      }
     });
 
     rxn += ("   " + (rl+xl).toString()).slice( -3);
