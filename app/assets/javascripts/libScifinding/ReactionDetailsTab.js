@@ -11,6 +11,7 @@ import classnames from 'classnames';
 
 // strip molfile V2000 after molecule end 'M  END'
 const stripMolfile = (molfile) => {
+  if(!molfile) return '';
   const splitted = molfile.split(/(^M  END)/m)
   if (splitted.length > 1) {
     return splitted.slice(0, 2).join('').concat("\n")
@@ -110,11 +111,11 @@ export default class ReactionDetailsTabHook extends Component {
   }
 
   buttonSVG(svgPath, id) {
+    if (!svgPath.includes(".svg")) return null;
       const classes = classnames({
         sf_reaction_selector: true ,
         sf_sample_off: !this.state[id]
       });
-
     return(
       <ButtonGroup  key={"btGrp"+id} >
         <Button className={'sf-reaction-button'}  style={{ cursor:'pointer'}} onClick={() =>{this.toggleSelection(id)}}>
